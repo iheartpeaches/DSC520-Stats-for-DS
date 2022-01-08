@@ -85,47 +85,66 @@ library(ggplot2)
 
 #bedrom distribution
 ggplot(housing_df, aes(bedrooms)) + geom_histogram()
+#positively skewed
 
 #saleprice distribution
 ggplot(housing_df, aes(sale_price)) + geom_histogram()
+#positively skewed
 
 #full bath count distribution
-ggplot(housing_df, aes(bath_full_count)) + geom_histogram()
+ggplot(housing_df, aes(bath_full_count)) + geom_histogram(bins = 15)
+#almost normal - positively skewed
 
 #sq ft lot distribution
 ggplot(housing_df, aes(sq_ft_lot)) + geom_histogram()
+#slightly positively skewed
 
 #year built distribution
 ggplot(housing_df, aes(year_built)) + geom_histogram()
+#negatively skewed
 
 #square feet total living distribution
 ggplot(housing_df, aes(square_feet_total_living)) + geom_histogram()
+#positively skewed
 
 #Check for outliers
 #bedrooms variable
 ggplot(housing_df) +  aes(x = "", y = bedrooms) + geom_boxplot()
-boxplot.stats(housing_df$bedrooms)$out
+#get list of outliers
+outliers <- boxplot.stats(housing_df$bedrooms)$out
+length(outliers)
+#there are 152 outliers
 
 #sale price variable
 ggplot(housing_df) +  aes(x = "", y = sale_price) + geom_boxplot()
-boxplot.stats(housing_df$sale_price)$out
+outliers <- boxplot.stats(housing_df$sale_price)$out
+length(outliers)
+#there are 633 outliers
 
 #full bath count variable
 ggplot(housing_df) +  aes(x = "", y = bath_full_count) + geom_boxplot()
-boxplot.stats(housing_df$bath_full_count)$out
+outliers <- boxplot.stats(housing_df$bath_full_count)$out
+length(outliers)
+#there are 105 outliers
 
 #sq ft lot variable
 ggplot(housing_df) +  aes(x = "", y = sq_ft_lot) + geom_boxplot()
-boxplot.stats(housing_df$sq_ft_lot)$out
+outliers <- boxplot.stats(housing_df$sq_ft_lot)$out
+length(outliers)
+#there are 2418 outliers
+
 
 #year built variable
 ggplot(housing_df) +  aes(x = "", y = year_built) + geom_boxplot()
-boxplot.stats(housing_df$year_built)$out
+outliers <- boxplot.stats(housing_df$year_built)$out
+length(outliers)
+#there are 87 outliers
 
 #square feet total living variable
 ggplot(housing_df) +  aes(x = "", y = square_feet_total_living) + geom_boxplot()
-boxplot.stats(housing_df$square_feet_total_living)$out
-
+outliers <- boxplot.stats(housing_df$square_feet_total_living)$out
+length(outliers)
+#there are 227 outliers
 
 #Create at least 2 new variables
 #create a variable that includes total # of bathrooms in the house
