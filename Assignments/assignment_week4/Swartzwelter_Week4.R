@@ -131,7 +131,7 @@ length(outliers)
 ggplot(housing_df) +  aes(x = "", y = sq_ft_lot) + geom_boxplot()
 outliers <- boxplot.stats(housing_df$sq_ft_lot)$out
 length(outliers)
-#there are 2418 outliers
+#there are 2418 outliers 
 
 
 #year built variable
