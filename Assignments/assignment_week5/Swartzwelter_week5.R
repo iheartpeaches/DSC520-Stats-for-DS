@@ -71,3 +71,4 @@ split <- str_split(my_string, " ")
 new_string <- sapply(split, function(x) paste(x[1:2], collapse = ' '))
 
 
+
