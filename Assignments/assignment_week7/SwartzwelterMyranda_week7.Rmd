@@ -1,0 +1,68 @@
+---
+title: "Student Survey"
+author: "Myranda Swartzwelter"
+date: "1/25/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+student_survey_df <- read.csv("student-survey.csv")
+```
+
+## Student Survey Covariance 
+
+Covariance is the averaged sum of combined deviations. A positive covariance indicates that as one variable deviates from the mean, the other variable also deviates from the mean in the same direction. A negative covariance indicates that as one variable deviates from the mean, the other variable deviates from the mean in the other direction.The magnitude of difference is dependent on the scale of the data being measured.
+
+```{r, echo=FALSE}
+table <-cov(student_survey_df)
+knitr::kable(table, "pipe", caption = "Covariance of Student Survey variables")
+```
+
+These results indicate that:
+
+* TimeReading is inversely related to TimeTV, Happiness and Gender and vice versa.
+* Time TV is positively related to Happiness and Gender and vice versa.
+* Happiness is positively related to Gender and vice versa.
+
+
+## Examining Variables
+
+```{r echo=FALSE}
+table <-head(student_survey_df)
+knitr::kable(table, "pipe", caption = "Example of Student Survey Variables")
+```
+
+Looking at the variables in the student survey table, we find that all of the variables are using different scales of measurement. For example, it appears that TimeReading is likely measured in hours whereas TimeTV is likely measured in minutes. Although if corrected for this by converting TimeReading to minutes or TimeTV to hours,  it would not change the sign of the covariance (so the relationship between variables remains positive or inverse), it would change the magnitude of the covariance between variables
+
+```{r echo=FALSE}
+student_survey_df$TimeReading_min <- student_survey_df$TimeReading*60
+student_survey_df <- student_survey_df[, c(1,5,2,3,4)]
+table <-cov(student_survey_df)
+knitr::kable(table, "pipe", caption = "Covariance of Student Survey variables")
+```
+
+Happiness is likely on a scale from 1-100 but we have no concept of a scale for this metric. It is unable to be changed into a minute or hour measure like the previous variables were.
+
+Gender is an indicator function, indicating a student is on gender if they are labeled as '1' and the other gender if labeled as '0'.
+
+If you swap the gender indicators (i.e. the 1's become 0's and the 0's become 1's), you also change the direction of the relationship between Gender and the other variables, but maintain the magnitude. See table for examples.
+
+
+```{r echo=FALSE}
+dont_want <- "TimeReading_min"
+student_survey_df <- student_survey_df[, ! names(student_survey_df) %in% dont_want, drop=FALSE]
+student_survey_df$Gender_Swap <- ifelse(student_survey_df$Gender == 1,0 , 1)
+table <-cov(student_survey_df)
+knitr::kable(table, "pipe", caption = "Covariance of Student Survey variables")
+dont_want <- "Gender_Swap"
+student_survey_df <- student_survey_df[, ! names(student_survey_df) %in% dont_want, drop=FALSE]
+
+hist(student_survey_df$TimeReading)
+hist(student_survey_df$TimeTV)
+hist(student_survey_df$Happiness)
+hist(student_survey_df$Gender)
+```
+
+
+
