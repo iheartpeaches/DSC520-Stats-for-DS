@@ -2,7 +2,8 @@
 title: "Student Survey"
 author: "Myranda Swartzwelter"
 date: "1/25/2022"
-output: pdf_document
+output: word_document
+#pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -48,7 +49,6 @@ Gender is an indicator function, indicating a student is on gender if they are l
 
 If you swap the gender indicators (i.e. the 1's become 0's and the 0's become 1's), you also change the direction of the relationship between Gender and the other variables, but maintain the magnitude. See table for examples.
 
-
 ```{r echo=FALSE}
 dont_want <- "TimeReading_min"
 student_survey_df <- student_survey_df[, ! names(student_survey_df) %in% dont_want, drop=FALSE]
@@ -57,12 +57,71 @@ table <-cov(student_survey_df)
 knitr::kable(table, "pipe", caption = "Covariance of Student Survey variables")
 dont_want <- "Gender_Swap"
 student_survey_df <- student_survey_df[, ! names(student_survey_df) %in% dont_want, drop=FALSE]
-
-hist(student_survey_df$TimeReading)
-hist(student_survey_df$TimeTV)
-hist(student_survey_df$Happiness)
-hist(student_survey_df$Gender)
 ```
 
 
+TimeTV, TimeReading and Happiness are ratio variables, where as gender is binary.
 
+
+## Type of Correlation Analysis
+
+First we want to look at the type of variables. For TimeTV, TimeReading and Happiness, the variables are ration and linear, so we can do a Pearson's R test. However for Gender, we must do a biserial correlation. This test is the same in R as the Pearson's test so we'll use Pearson's for all variables. Because of the values we saw in the covariances, I believe:
+
+
+* TimeReading will be negatively correlated with TimeTV, Happiness and Gender.
+* Time TV will be positively correlated to Happiness and Gender.
+* Happiness will be positively correlated to Gender.
+
+## Correlation Analysis
+
+Correlations of all variables. For this analysis we'll change the variables of time reading to be in minutes to match tv time.
+```{r echo=FALSE}
+
+student_survey_df$TimeReading <- student_survey_df$TimeReading*60
+table <-cor(student_survey_df)
+knitr::kable(table, "pipe", caption = "Pearson R correlation of Student Survey variables")
+
+
+```
+
+Correlation of two variables TimeTV and TimeReading: 
+
+```{r echo=FALSE}
+cor.test(student_survey_df$TimeReading, student_survey_df$TimeTV,alternative='less', method = 'pearson')
+
+```
+
+
+Correlation of two variables TimeTV and TimeReading with 99% Confidence Interval: 
+
+```{r echo=FALSE}
+cor.test(student_survey_df$TimeReading, student_survey_df$TimeTV,alternative='less', method = 'pearson', conf.level = 0.99)
+
+```
+
+Looking at the correlation matrix we can say:
+
+* TimeTV and TimeReading are strongly negatively correlated (p value calculated < 0.05)
+* TimeTV and Happiness are potentially positively correlated
+* TimeTV and Gender are not correlated
+* TimeReading and Happiness are potentially negatively correlated
+* TimeReading and Gender are not correlated
+* Happiness and Gender may be slightly positively correlated
+
+Based on your analysis can you say that watching more TV caused students to read less? Explain.
+
+Yes, when doing a correlation test, we see that the null hypothesis is rejected with a p value of 0.000157 so TimeReading and TimeTV are negatively correlated, or the more someone watches TV, the less time they spend reading.
+
+
+Pick three variables and perform a partial correlation, documenting which variable you are “controlling”. Explain how this changes your interpretation and explanation of the results.
+
+I am choosing to perform a partial correlation for TimeTV and TimeReading while controlling for Happiness.
+
+```{r echo=FALSE}
+library('ggm')
+pc <-pcor(c("TimeReading", "TimeTV", "Happiness"), var(student_survey_df))
+pcor(c("TimeReading", "TimeTV", "Happiness"), var(student_survey_df))
+pcor.test(pc,1,11)
+
+```
+When controlling for happiness, the partial correlation for TVTime and TVReading goes from -0.88 to -0.87. This is still a strong correlation. The p value for the partial correlation is 0.000975 which is still significantly below 0.05. This means that even when controlling for happiness, there is a strong negative correlation between TimeTV and TimeReading.
