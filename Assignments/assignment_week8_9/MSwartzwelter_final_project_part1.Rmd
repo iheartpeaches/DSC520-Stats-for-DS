@@ -40,9 +40,15 @@ Coronavirus cases and restrictions are a bit like the chicken and the egg scenar
 
 1.  [Public access files for the Census Bureau’s Household Pulse survey](https://www.census.gov/programs-surveys/household-pulse-survey/datasets.html)
 
+The Census Bureau's Household Pulse survey is a 20 minute online survey that started on April 23, 2020 and ran through February 7, 2022, split into 6 different phases. The survey was and is meant to give the U.S. government insight into how the Coronavirus pandemic is impacting American households economically. There are questions around education, childcare, employment, health, food security, intention to recieve a vaccine etc. 
+
 2. [NYT US State Covid data](https://github.com/nytimes/covid-19-data/blob/master/us-states.csv)
+
+The NYT or New York Times started collecting Covid-19 information such as number of infections and hospitalizations and deaths in order to power their own stories and visualizations. It was made public so the data could be widely shared and used. 
+
 3. [Vaccination data through the CDC’s Vaccination Data Tracker](https://covid.cdc.gov/covid-data-tracker/#datatracker-home)
 
+The CDC or Center for Disease Control is the governmental body responsible for tracking the vaccine and Covid-19 data in America. They have several different interesting data sets, but I'm particularly interested in their data set to track vaccine doses in the United States.
  
 ## Required Packages 
 
