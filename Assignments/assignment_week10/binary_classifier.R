@@ -6,6 +6,8 @@
 library('car')
 library('mlogit')
 library('dplyr')
+install.packages('class')
+
 
 #read in dataset
 setwd('/Users/myrandaswartzwelter/Documents/Bellvue/Term-2/DSC-520/DSC520-Stats-for-DS/Assignments/')
